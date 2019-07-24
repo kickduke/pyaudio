@@ -19,9 +19,9 @@ def wavread(path):
 
 def main():
     #path = input("The Path is:")
-    path = r'D:\\PythonProject\\draw_wave\\sin_wave.wav'
+    path = r'tri_wave.wav'
     wavdata,wavtime = wavread(path)
-    plt.title("Night.wav's Frames")
+    plt.title("Wave Frames")
     plt.subplot(211)
     plt.plot(wavtime, wavdata[0],color = 'green')
     plt.subplot(212)
