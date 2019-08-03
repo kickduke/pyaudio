@@ -6,15 +6,15 @@ import struct
 
 ##生成wav文件
 def write_note(time, freq, framerate, file, vol = 0.5, sampwidth = 2):
-    t = 0   #时刻
-    PCT = 50   #占空比
-    step = 1.0/framerate    #每帧时长，用于计算t
-    period = 2.0 * freq     #每秒震动周期，与频率正相关  假设每个方波周期是2.0
+    t = 0
+    step = 1.0/framerate
+    period = 1.0 * freq
     amp = vol * (math.pow(2, sampwidth*8 - 1))
     while t <= time:
-        note = int(amp/2*(t*period%2))
+        note = int(amp*(2*abs(2*(t*period - math.floor(t*period + 0.5))) - 1))
         t += step
-        file.writeframesraw(struct.pack('h',note))   #转为short整型
+        file.writeframesraw(struct.pack('h',note))
+        
 
 FRAMERATE = 12800
 CHANNELS = 2

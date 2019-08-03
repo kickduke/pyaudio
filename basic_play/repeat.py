@@ -8,15 +8,19 @@ import struct
 
 ##写入wav流
 def write_note(time, freq, framerate, file, vol = 0.5, sampwidth = 2):
-    t = 0   #时刻
-    PCT = 50   #占空比
-    step = 1.0/framerate    #每帧时长，用于计算t
-    period = 2.0 * freq     #每秒震动周期，与频率正相关  假设每个方波周期是2.0
+    t = 0
+    step = 1.0/framerate
+    period = 1.0 * freq
     amp = vol * (math.pow(2, sampwidth*8 - 1))
-    while t <= time:
-        note = int(amp/2*(t*period%2))
+    if freq > 0 :
+        time_refine = round(time*freq,0)/freq
+    else :
+        time_refine = time
+    while t <= time_refine :
+        note = int(amp*(2*abs(2*(t*period - math.floor(t*period + 0.5))) - 1))
         t += step
-        file.writeframesraw(struct.pack('h',note))   #转为short整型
+        file.writeframesraw(struct.pack('h',note))
+
 
 #game
 runnable = 1
@@ -34,12 +38,18 @@ f1 = 349.23
 g1 = 392
 a1 = 440
 b1= 493.88
-wf = wave.open('tri_wave.wav', 'w')
+linecnt = 0
+wf = wave.open('repeat_wave.wav', 'w')
 wf.setnchannels(CHANNELS)
 wf.setframerate(FRAMERATE)
 wf.setsampwidth(2)
 #source
 sf = open('source.txt', 'r')
+##获取文件行数
+for line in sf.readlines() :
+    linecnt += 1
+print('linecnt=',linecnt)
+sf.seek(0)
 
 ##生成音频
 while(runnable != 0) :
@@ -52,7 +62,7 @@ while(runnable != 0) :
     sleep_time = frame_period - (end_time - start_time)
     if(sleep_time > 0) :
         time.sleep(sleep_time)
-    if(cnt >= 240) :
+    if(cnt >= linecnt) :
         runnable = 0
         wf.close()
         sf.close()
@@ -60,7 +70,7 @@ while(runnable != 0) :
 ##播放生成的wav文件
 print('开始播放wav')
 CHUNK = 1
-wf = wave.open('tri_wave.wav', 'rb')
+wf = wave.open('repeat_wave.wav', 'rb')
 #rf = open('record.txt', 'w')
 p = pyaudio.PyAudio()
 stream = p.open(format = p.get_format_from_width(wf.getsampwidth()),
