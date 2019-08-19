@@ -11,17 +11,19 @@ def write_note(time, freq, framerate, file, vol = 0.5, sampwidth = 2):
     period = 1.0 * freq
     amp = vol * (math.pow(2, sampwidth*8 - 1))
     while t <= time:
-        note = int(amp*(2*abs(2*(t*period - math.floor(t*period + 0.5))) - 1))
+        ##note = int(amp*(2*abs(2*(t*period - math.floor(t*period + 0.5))) - 1))
+        note = int(amp*(abs(2*(t*period - math.floor(t*period + 0.5)))))
         t += step
         file.writeframesraw(struct.pack('h',note))
         
 
-FRAMERATE = 12800
-CHANNELS = 2
+FRAMERATE = 44100
+CHANNELS = 1
+SAMPWIDTH = 2
 wf = wave.open('tri_wave.wav', 'w')
 wf.setnchannels(CHANNELS)
 wf.setframerate(FRAMERATE)
-wf.setsampwidth(2)
+wf.setsampwidth(SAMPWIDTH)
 
 g  = 196
 c1 = 261.63
@@ -32,45 +34,45 @@ g1 = 392
 a1 = 440
 b1= 493.88
 #1231|1231
-write_note(0.5, c1, FRAMERATE, wf, 0.5, 2)
-write_note(0.5, d1, FRAMERATE, wf, 0.5, 2)
-write_note(0.5, e1, FRAMERATE, wf, 0.5, 2)
-write_note(0.5, c1, FRAMERATE, wf, 0.5, 2)
-write_note(0.5, c1, FRAMERATE, wf, 0.5, 2)
-write_note(0.5, d1, FRAMERATE, wf, 0.5, 2)
-write_note(0.5, e1, FRAMERATE, wf, 0.5, 2)
-write_note(0.5, c1, FRAMERATE, wf, 0.5, 2)
+write_note(0.5, c1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.5, d1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.5, e1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.5, c1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.5, c1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.5, d1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.5, e1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.5, c1, FRAMERATE, wf, 0.5, SAMPWIDTH)
 #3450|3450
-write_note(0.5, e1, FRAMERATE, wf, 0.5, 2)
-write_note(0.5, f1, FRAMERATE, wf, 0.5, 2)
-write_note(0.5, g1, FRAMERATE, wf, 0.5, 2)
-write_note(0.5, 0, FRAMERATE, wf, 0.5, 2)
-write_note(0.5, e1, FRAMERATE, wf, 0.5, 2)
-write_note(0.5, f1, FRAMERATE, wf, 0.5, 2)
-write_note(0.5, g1, FRAMERATE, wf, 0.5, 2)
-write_note(0.5, 0, FRAMERATE, wf, 0.5, 2)
+write_note(0.5, e1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.5, f1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.5, g1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.5, 0, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.5, e1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.5, f1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.5, g1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.5, 0, FRAMERATE, wf, 0.5, SAMPWIDTH)
 #565431|565431
-write_note(0.25, g1, FRAMERATE, wf, 0.5, 2)
-write_note(0.25, a1, FRAMERATE, wf, 0.5, 2)
-write_note(0.25, g1, FRAMERATE, wf, 0.5, 2)
-write_note(0.25, f1, FRAMERATE, wf, 0.5, 2)
-write_note(0.5, e1, FRAMERATE, wf, 0.5, 2)
-write_note(0.5, c1, FRAMERATE, wf, 0.5, 2)
-write_note(0.25, g1, FRAMERATE, wf, 0.5, 2)
-write_note(0.25, a1, FRAMERATE, wf, 0.5, 2)
-write_note(0.25, g1, FRAMERATE, wf, 0.5, 2)
-write_note(0.25, f1, FRAMERATE, wf, 0.5, 2)
-write_note(0.5, e1, FRAMERATE, wf, 0.5, 2)
-write_note(0.5, c1, FRAMERATE, wf, 0.5, 2)
+write_note(0.25, g1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.25, a1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.25, g1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.25, f1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.5, e1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.5, c1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.25, g1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.25, a1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.25, g1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.25, f1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.5, e1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.5, c1, FRAMERATE, wf, 0.5, SAMPWIDTH)
 #2510|2510
-write_note(0.5, d1, FRAMERATE, wf, 0.5, 2)
-write_note(0.5, g, FRAMERATE, wf, 0.5, 2)
-write_note(0.5, c1, FRAMERATE, wf, 0.5, 2)
-write_note(0.5, 0, FRAMERATE, wf, 0.5, 2)
-write_note(0.5, d1, FRAMERATE, wf, 0.5, 2)
-write_note(0.5, g, FRAMERATE, wf, 0.5, 2)
-write_note(0.5, c1, FRAMERATE, wf, 0.5, 2)
-write_note(0.5, 0, FRAMERATE, wf, 0.5, 2)
+write_note(0.5, d1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.5, g, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.5, c1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.5, 0, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.5, d1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.5, g, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.5, c1, FRAMERATE, wf, 0.5, SAMPWIDTH)
+write_note(0.5, 0, FRAMERATE, wf, 0.5, SAMPWIDTH)
 wf.close()
 
 ##播放生成的wav文件

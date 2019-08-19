@@ -7,7 +7,10 @@ https://www.cnblogs.com/ldzhangyx/p/8616037.html
 https://www.cnblogs.com/jameswong15/p/9316871.html
 https://www.cnblogs.com/ldt-/p/10217830.html
 
+https://www.cnblogs.com/hwnzy/p/8149949.html
 253  ±Í◊º“Ù 440
 
+https://blog.csdn.net/zwz1984/article/details/50395053  ªÏ∆µ
+https://wiki.nesdev.com/w/index.php/APU_Mixer  APU mixer
 
 https://cpp.ctolib.com/libsoundioc.html   C”Ô—‘”√API
