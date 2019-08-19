@@ -28,50 +28,52 @@ def write_note(time, framerate, file, sampwidth, freq1, vol1, duty1, freq2, vol2
         PCT2 = 75
     step = 1.0/framerate    #每帧时长，用于计算t
     period1 = 8.0 * freq1     #每秒震动周期，与频率正相关  假设每个方波周期是8.0
-    period2 = 8.0 * freq2    
+    period2 = 8.0 * freq2 
+    period3 = 1.0 * freq3
+    #计算squa1的refine time    
     if freq1 > 0 :
         time_refine1 = round(time*freq1, 0)/freq1
     else :
         time_refine1 = time
+    #计算squa2的refine time  
     if freq2 > 0 :
         time_refine2 = round(time*freq2, 0)/freq2
     else :
         time_refine2 = time
-    #取较长的时间作为refine time，并记录哪个声道时间较短
-    time_refine = max(time_refine1, time_refine2)
-    time_shorter = min(time_refine1, time_refine2)
-    if time_refine1 >= time_refine2 :
-        shorter_channel = 2
+    #计算tri的refine time 
+    if freq3 > 0 :
+        time_refine3 = round(time*freq3,0)/freq3
     else :
-        shorter_channel = 1
-
+        time_refine3 = time
+    
+    #取较长的时间作为refine time 
+    time_refine = max(time_refine1, time_refine2, time_refine3)
     amp1 = vol1 * (math.pow(2, sampwidth*8 - 1))
     amp2 = vol2 * (math.pow(2, sampwidth*8 - 1))
-    while t <= time_refine:
-        if t <= shorter_channel:
-            if (t*period1) % 8.0 <= 8.0/(100/PCT1):    
+    amp3 = vol3 * (math.pow(2, sampwidth*8 - 1))
+    
+    while t <= time_refine :
+        if t <= time_refine1 :
+            if (t*period1) % 8.0 <= 8.0/(100/PCT1) :    
                 note1 = int(amp1)
-            else: 
+            else : 
                 note1 = 0
-            if (t*period2) % 8.0 <= 8.0/(100/PCT2):    
+        else :
+            note1 = 0
+        if t <= time_refine2 :   
+            if (t*period2) % 8.0 <= 8.0/(100/PCT2) :    
                 note2 = int(amp2)
-            else: 
+            else : 
                 note2 = 0
-        else:
-            if shorter_channel == 1 :
-                note1 = 0
-                if (t*period2) % 8.0 <= 8.0/(100/PCT2):    
-                    note2 = int(amp2)
-                else: 
-                    note2 = 0
-            if shorter_channel == 2 :
-                note2 = 0
-                if (t*period1) % 8.0 <= 8.0/(100/PCT1):    
-                    note1 = int(amp1)
-                else: 
-                    note1 = 0
+        else :
+            note2 = 0
+        if t <= time_refine3 :
+            note3 = int(amp3*(abs(2*(t*period3- math.floor(t*period3 + 0.5)))))
+        else :
+            note3 = 0
         #混频
-        note = int(note1 + note2 - note1*note2/(math.pow(2, sampwidth*8 - 1)))
+        note = int(note1 + note2 + note3 - note1*note2/(math.pow(2, sampwidth*8 - 1)) - note1*note3/(math.pow(2, sampwidth*8 - 1)) \
+                   - note2*note3/(math.pow(2, sampwidth*8 - 1)) + note1*note2*note3/(math.pow(2, 2*(sampwidth*8 - 1))))
         t += step
         file.writeframesraw(struct.pack('H',note))   #转为short整型
 
@@ -122,6 +124,10 @@ while(runnable != 0) :
     else :
         note_freq2 = 0
     wave_len3 = int(readline3.split(':', 2)[2])  #波长
+    if wave_len3 > 0 :
+        note_freq3 = round((1.789773*1000000.0)/(16*(wave_len3+1)),2)
+    else :
+        note_freq3 = 0
     vol3 = 0.5        
     print('cnt=' + str(cnt) + ' ||squa1: ' + str(wave_len1) + ' ' + str(note_freq1) + ' ' + str(vol1) + ' ' + str(duty1) \
            + ' ||squa2: ' + str(wave_len2) + ' ' + str(note_freq2) + ' ' + str(vol2) + ' ' + str(duty2) + '||tri: ' + str(note_freq3))
