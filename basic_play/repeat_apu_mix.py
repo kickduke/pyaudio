@@ -128,7 +128,7 @@ while(runnable != 0) :
         note_freq3 = round((1.789773*1000000.0)/(16*(wave_len3+1)),2)
     else :
         note_freq3 = 0
-    vol3 = 0.5        
+    vol3 = 1.0       
     print('cnt=' + str(cnt) + ' ||squa1: ' + str(wave_len1) + ' ' + str(note_freq1) + ' ' + str(vol1) + ' ' + str(duty1) \
            + ' ||squa2: ' + str(wave_len2) + ' ' + str(note_freq2) + ' ' + str(vol2) + ' ' + str(duty2) + '||tri: ' + str(note_freq3))
     write_note(frame_period, FRAMERATE, wf, SAMPWIDTH, note_freq1, vol1, duty1, note_freq2, vol2, duty2, note_freq3, vol3)
